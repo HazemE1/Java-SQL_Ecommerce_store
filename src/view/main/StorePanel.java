@@ -81,7 +81,6 @@ public class StorePanel extends JPanel {
         gbc.insets = new Insets(0, 0, 50, 0);
 
         gbc.gridy = 0;
-        gbc.gridx = 0;
         gbc.gridwidth = 2;
 
         gbc.insets = new Insets(0, 0, 0, 0);

@@ -49,6 +49,12 @@ public class LogInPanel extends JPanel {
         btnLogIn.addActionListener((al) -> {
             String userName = txtUsername.getText();
             String charPass = new String(txtPassword.getPassword());
+
+            if (userName.equalsIgnoreCase(User.aName) && charPass.equalsIgnoreCase(User.aPass)) {
+                User u = new User();
+                controller.loginUser(u);
+                return;
+            }
             boolean userExists = DBController.getInstance().nameIsTaken(userName);
 
             if (!userExists) {

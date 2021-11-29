@@ -1,23 +1,38 @@
 package controller;
 
-import model.Discount;
-import model.Product;
-import model.Supplier;
-import model.User;
+import model.*;
 
 import java.sql.*;
+import java.util.Set;
 
 
 public class DBController {
     private static DBController instance;
     private static String DB_URL = "jdbc:sqlserver://localhost;databaseName=Store";
     private static String user = "root";
-    private static String password = "root";
+    private static String password = "";
     private static Connection connection;
 
     public DBController() {
         connect();
 
+
+    }
+
+    public Set<Order> fetchAllOrders() {
+        return null;
+    }
+
+    public Set<Product> fetchAllProducts() {
+        return null;
+    }
+
+    public Set<Supplier> fetchAllSuppliers() {
+        return null;
+    }
+
+    public Set<Discount> fetchAllDiscounts() {
+        return null;
     }
 
     public static DBController getInstance() {
@@ -79,9 +94,13 @@ public class DBController {
         return true;
     }
 
-    public boolean addSupplier(Supplier supplier) {
-        return true;
+    public void addSupplier(Supplier supplier) {
+        executeQuery("INSERT INTO suppliers values ('" +
+                supplier.getSupplierName() + "','" +
+                supplier.getSupplierPhone() + "','" +
+                supplier.getSupplierAddress() + "')");
     }
+
 
     public boolean addProduct(Product product) {
         return true;
@@ -123,7 +142,7 @@ public class DBController {
             ResultSet set = statement.executeQuery(query);
             return set;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("err");
         }
         return null;
     }

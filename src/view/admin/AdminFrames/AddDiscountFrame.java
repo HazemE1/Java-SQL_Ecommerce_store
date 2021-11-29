@@ -1,6 +1,7 @@
 package view.admin.AdminFrames;
 
 import controller.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,14 +19,14 @@ public class AddDiscountFrame extends JFrame {
 
     private void initializeComponents() {
         setTitle("Create account");
-        setSize(new Dimension(500,400));
+        setSize(new Dimension(500, 400));
         setMinimumSize(new Dimension(500, 400));
-        setPreferredSize(new Dimension(500,400));
+        setPreferredSize(new Dimension(500, 400));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
         addDiscountPanel = new AddDiscountPanel(controller, this);
     }

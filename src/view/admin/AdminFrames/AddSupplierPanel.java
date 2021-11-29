@@ -41,7 +41,7 @@ public class AddSupplierPanel extends JPanel{
     }
 
     private void initializeComponents() {
-        lblSupplierName = new JLabel("Supplier name: ");
+        lblSupplierName = new JLabel("name: ");
         lblSupplierName.setMinimumSize(new Dimension(120,20));
         lblSupplierName.setPreferredSize(new Dimension(120,20));
 
@@ -51,7 +51,7 @@ public class AddSupplierPanel extends JPanel{
         txtSupplierName.setOpaque(true);
         txtSupplierName.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-        lblSupplierPhone = new JLabel("Supplier phone: ");
+        lblSupplierPhone = new JLabel("Phone: ");
         lblSupplierPhone.setMinimumSize(new Dimension(120,20));
         lblSupplierPhone.setPreferredSize(new Dimension(120,20));
 
@@ -62,7 +62,7 @@ public class AddSupplierPanel extends JPanel{
         txtSupplierPhone.setOpaque(true);
         txtSupplierPhone.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-        lblSupplierAddress = new JLabel("Supplier address: ");
+        lblSupplierAddress = new JLabel("Address: ");
         lblSupplierAddress.setMinimumSize(new Dimension(120,20));
         lblSupplierAddress.setPreferredSize(new Dimension(120,20));
 
@@ -72,7 +72,7 @@ public class AddSupplierPanel extends JPanel{
         txtSupplierAddress.setOpaque(true);
         txtSupplierAddress.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-        lblSupplierCity = new JLabel("Supplier city: ");
+        lblSupplierCity = new JLabel("City: ");
         lblSupplierCity.setMinimumSize(new Dimension(120,20));
         lblSupplierCity.setPreferredSize(new Dimension(120,20));
 
@@ -82,7 +82,7 @@ public class AddSupplierPanel extends JPanel{
         txtSupplierCity.setOpaque(true);
         txtSupplierCity.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-        lblSupplierCountry = new JLabel("Supplier country: ");
+        lblSupplierCountry = new JLabel("Country: ");
         lblSupplierCountry.setMinimumSize(new Dimension(120,20));
         lblSupplierCountry.setPreferredSize(new Dimension(120,20));
 
@@ -196,6 +196,7 @@ public class AddSupplierPanel extends JPanel{
 
             if(!supplierName.isEmpty() && !supplierPhone.isEmpty() && !supplierAddressLine.isEmpty() &&!supplierCity.isEmpty()){
                 controller.sendSupplierCredentials(supplierName, supplierAddress, supplierPhone);
+                addSupplierFrame.setVisible(false);
             }
             else {
                 JOptionPane.showMessageDialog(null, "Enter all details!");

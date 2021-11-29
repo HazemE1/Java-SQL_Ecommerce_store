@@ -1,9 +1,14 @@
 package model;
 
+import controller.DBController;
+
 import java.util.List;
+import java.util.Set;
 
 public class User {
-    private List<Product> cart;
+    private Order cart;
+    private Set<Order> orderHistory;
+
     private String userName;
     private String firstName;
     private String password;
@@ -14,11 +19,14 @@ public class User {
     private String country;
     private String phone;
     private Roles role;
+    public static String aName = "admin";
+    public static String aPass = "a1234";
+
 
     public User() {
-        userName = "admin";
+        userName = aName;
         firstName = "admin";
-        password = "a1234";
+        password = aPass;
         lastName = "admin";
         email = "admin";
         address = "admin";
@@ -39,6 +47,14 @@ public class User {
         this.country = country;
         this.phone = phone;
         this.role = Roles.User;
+    }
+
+    public Set<Order> getOrderHistory() {
+        DBController dbController = DBController.getInstance();
+
+
+
+
     }
 
     public String getUserName() {

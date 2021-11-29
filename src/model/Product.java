@@ -5,12 +5,24 @@ public class Product {
     private int productQuantity;
     private int productPrice;
     private String productSupplier;
+    private String productID;
 
-    public Product(String productName, int productQuantity, int productPrice, String productSupplier) {
+
+    public Product(String productName, int productQuantity, int productPrice, String productSupplier, String productID) {
         this.productName = productName;
         this.productQuantity = productQuantity;
         this.productPrice = productPrice;
         this.productSupplier = productSupplier;
+        this.productID = productID;
+    }
+
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
     }
 
     public String getProductName() {
@@ -45,4 +57,8 @@ public class Product {
         this.productSupplier = productSupplier;
     }
 
+
+    public String getCode(){
+        return this.productID + "#";
+    }
 }

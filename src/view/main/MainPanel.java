@@ -46,41 +46,16 @@ public class MainPanel extends JPanel {
     }
 
     public void updateAdminView() {
-        remove(pnlLogIn);
-        remove(pnlStore);
-
-        setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(600, 600));
-        setMaximumSize(new Dimension(600, 600));
-        setMinimumSize(new Dimension(600, 600));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(pnlAdminMain, gbc);
-
-        revalidate();
-        repaint();
+        this.getController().getMainFrame().setVisible(false);
+        this.getController().getMainFrame().setContentPane(pnlAdminMain);
+        this.getController().getMainFrame().setVisible(true);
     }
 
     public void updateUserView() {
-        remove(pnlLogIn);
-        remove(pnlStore);
+        this.getController().getMainFrame().setVisible(false);
+        this.getController().getMainFrame().setContentPane(pnlUserMain);
+        this.getController().getMainFrame().setVisible(true);
 
-        setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(600, 600));
-        setMaximumSize(new Dimension(600, 600));
-        setMinimumSize(new Dimension(600, 600));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(pnlUserMain, gbc);
-
-        revalidate();
-        repaint();
     }
 
 
