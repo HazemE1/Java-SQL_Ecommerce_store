@@ -91,9 +91,6 @@ public class MainPanel extends JPanel {
         controller.openViewUsedDiscountsFrame();
     }
 
-    public void updateProductList() {
-        pnlAdminMain.updateProductList();
-    }
 
     public void openShoppingcart() {
         controller.openShoppingCart();

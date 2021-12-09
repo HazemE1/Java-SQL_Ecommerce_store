@@ -1,7 +1,7 @@
 package view.admin.AdminFrames;
 
 
-import controller.*;
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class ViewUsedDiscountsPanel extends JPanel {
 
         listUsedDiscounts = new JList<>(defaultListModel);
 
-        if(defaultListModel.isEmpty()){
+        if (defaultListModel.isEmpty()) {
             defaultListModel.addElement("No previous discounts");
         }
         listUsedDiscounts.setSize(new Dimension(400, 400));
@@ -57,8 +57,8 @@ public class ViewUsedDiscountsPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         setPreferredSize(new Dimension(500, 500));
-        setMaximumSize(new Dimension(500,500));
-        setMinimumSize(new Dimension(500,500));
+        setMaximumSize(new Dimension(500, 500));
+        setMinimumSize(new Dimension(500, 500));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -76,10 +76,10 @@ public class ViewUsedDiscountsPanel extends JPanel {
         btnExit.addActionListener(new BtnExitListener());
     }
 
-    public void updateUsedDiscountList(){
+    public void updateUsedDiscountList() {
         defaultListModel.removeAllElements();
 
-        if(defaultListModel.isEmpty()){
+        if (defaultListModel.isEmpty()) {
             defaultListModel.addElement("No previous discounts");
         }
     }

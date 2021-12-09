@@ -3,6 +3,7 @@ package controller;
 import model.*;
 
 import java.sql.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,19 +21,79 @@ public class DBController {
     }
 
     public Set<Order> fetchAllOrders() {
-        return null;
+        Set<Order> val = new HashSet<>();
+        ResultSet set = executeQuery("SELECT * FROM orders;");
+        try {
+            while (set.next()) {
+                val.add(new Order(
+                        set.getString("orderId"),
+                        set.getString("orderContent"),
+                        OrderStatus.valueOf(set.getString("confirmation")),
+                        set.getString("username")
+
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return val;
     }
 
     public Set<Product> fetchAllProducts() {
-        return null;
+        Set<Product> val = new HashSet<>();
+        ResultSet set = executeQuery("SELECT * FROM products;");
+        try {
+            while (set.next()) {
+                val.add(
+                        new Product(
+                                set.getString("pName"),
+                                set.getInt("stockTotal"),
+                                set.getInt("basePrice"),
+                                set.getString("supplier"),
+                                set.getString("pCode")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return val;
     }
 
     public Set<Supplier> fetchAllSuppliers() {
-        return null;
+        Set<Supplier> val = new HashSet<>();
+        ResultSet set = executeQuery("SELECT * FROM suppliers;");
+        try {
+            while (set.next()) {
+                val.add(new Supplier(set.getString("name"), set.getString("address"), set.getString("tel")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return val;
     }
 
     public Set<Discount> fetchAllDiscounts() {
-        return null;
+        Set<Discount> val = new HashSet<>();
+        ResultSet set = executeQuery("SELECT * FROM discount;");
+        try {
+            while (set.next()) {
+                val.add(new Discount(
+                        set.getString("code"),
+                        set.getInt("percentage"),
+                        set.getString("description"),
+                        set.getString("products")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        val.add(new Discount("No discount", 0, "No discount"));
+
+        return val;
     }
 
     public static DBController getInstance() {

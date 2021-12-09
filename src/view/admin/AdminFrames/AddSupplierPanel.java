@@ -1,16 +1,15 @@
 package view.admin.AdminFrames;
 
 
-import controller.*;
+import controller.Controller;
+import model.Countries;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.Countries;
-
-public class AddSupplierPanel extends JPanel{
+public class AddSupplierPanel extends JPanel {
     private Controller controller;
     private AddSupplierFrame addSupplierFrame;
 
@@ -42,53 +41,53 @@ public class AddSupplierPanel extends JPanel{
 
     private void initializeComponents() {
         lblSupplierName = new JLabel("name: ");
-        lblSupplierName.setMinimumSize(new Dimension(120,20));
-        lblSupplierName.setPreferredSize(new Dimension(120,20));
+        lblSupplierName.setMinimumSize(new Dimension(120, 20));
+        lblSupplierName.setPreferredSize(new Dimension(120, 20));
 
         txtSupplierName = new JTextField();
-        txtSupplierName.setMinimumSize(new Dimension(120,20));
-        txtSupplierName.setPreferredSize(new Dimension(120,20));
+        txtSupplierName.setMinimumSize(new Dimension(120, 20));
+        txtSupplierName.setPreferredSize(new Dimension(120, 20));
         txtSupplierName.setOpaque(true);
         txtSupplierName.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblSupplierPhone = new JLabel("Phone: ");
-        lblSupplierPhone.setMinimumSize(new Dimension(120,20));
-        lblSupplierPhone.setPreferredSize(new Dimension(120,20));
+        lblSupplierPhone.setMinimumSize(new Dimension(120, 20));
+        lblSupplierPhone.setPreferredSize(new Dimension(120, 20));
 
         txtSupplierPhone = new JTextField();
-        txtSupplierPhone.setMinimumSize(new Dimension(120,20));
-        txtSupplierPhone.setPreferredSize(new Dimension(120,20));
+        txtSupplierPhone.setMinimumSize(new Dimension(120, 20));
+        txtSupplierPhone.setPreferredSize(new Dimension(120, 20));
 
         txtSupplierPhone.setOpaque(true);
         txtSupplierPhone.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblSupplierAddress = new JLabel("Address: ");
-        lblSupplierAddress.setMinimumSize(new Dimension(120,20));
-        lblSupplierAddress.setPreferredSize(new Dimension(120,20));
+        lblSupplierAddress.setMinimumSize(new Dimension(120, 20));
+        lblSupplierAddress.setPreferredSize(new Dimension(120, 20));
 
         txtSupplierAddress = new JTextField();
-        txtSupplierAddress.setMinimumSize(new Dimension(120,20));
-        txtSupplierAddress.setPreferredSize(new Dimension(120,20));
+        txtSupplierAddress.setMinimumSize(new Dimension(120, 20));
+        txtSupplierAddress.setPreferredSize(new Dimension(120, 20));
         txtSupplierAddress.setOpaque(true);
         txtSupplierAddress.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblSupplierCity = new JLabel("City: ");
-        lblSupplierCity.setMinimumSize(new Dimension(120,20));
-        lblSupplierCity.setPreferredSize(new Dimension(120,20));
+        lblSupplierCity.setMinimumSize(new Dimension(120, 20));
+        lblSupplierCity.setPreferredSize(new Dimension(120, 20));
 
         txtSupplierCity = new JTextField();
-        txtSupplierCity.setMinimumSize(new Dimension(120,20));
-        txtSupplierCity.setPreferredSize(new Dimension(120,20));
+        txtSupplierCity.setMinimumSize(new Dimension(120, 20));
+        txtSupplierCity.setPreferredSize(new Dimension(120, 20));
         txtSupplierCity.setOpaque(true);
         txtSupplierCity.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblSupplierCountry = new JLabel("Country: ");
-        lblSupplierCountry.setMinimumSize(new Dimension(120,20));
-        lblSupplierCountry.setPreferredSize(new Dimension(120,20));
+        lblSupplierCountry.setMinimumSize(new Dimension(120, 20));
+        lblSupplierCountry.setPreferredSize(new Dimension(120, 20));
 
         cmbBoxCountries = new JComboBox<>(controller.getCountries());
-        cmbBoxCountries.setMinimumSize(new Dimension(120,20));
-        cmbBoxCountries.setPreferredSize(new Dimension(120,20));
+        cmbBoxCountries.setMinimumSize(new Dimension(120, 20));
+        cmbBoxCountries.setPreferredSize(new Dimension(120, 20));
 
         cmbBoxCountries.setOpaque(true);
         cmbBoxCountries.setFont(new Font("Helvetica", Font.BOLD, 12));
@@ -99,6 +98,27 @@ public class AddSupplierPanel extends JPanel{
         btnAddSupplier.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnAddSupplier.setOpaque(true);
         btnAddSupplier.setBorderPainted(false);
+
+        btnAddSupplier.addActionListener(l -> {
+            String supplierName = txtSupplierName.getText();
+            String supplierAddress = String.format("%s, %s, %S", txtSupplierAddress.getText(), txtSupplierCity.getText(), ((Countries) cmbBoxCountries.getSelectedItem()).name().toLowerCase());
+            String supplierPhone = txtSupplierPhone.getText();
+
+            if (!supplierName.isEmpty() && !supplierPhone.isEmpty() && !txtSupplierAddress.getText().isEmpty() && !txtSupplierCity.getText().isEmpty()) {
+                boolean done = controller.newSupplier(
+                        supplierName,
+                        supplierAddress,
+                        supplierPhone);
+
+                if (!done) {
+                    JOptionPane.showMessageDialog(null, "There is already a supplier with that name!");
+                    return;
+                }
+                this.addSupplierFrame.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Enter all details!");
+            }
+        });
 
         btnExit = new JButton("Exit");
         btnExit.setSize(new Dimension(200, 25));
@@ -112,8 +132,8 @@ public class AddSupplierPanel extends JPanel{
     private void initializeGUI() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(500, 400));
-        setMaximumSize(new Dimension(500,400));
-        setMinimumSize(new Dimension(500,400));
+        setMaximumSize(new Dimension(500, 400));
+        setMinimumSize(new Dimension(500, 400));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -168,8 +188,7 @@ public class AddSupplierPanel extends JPanel{
         add(btnExit, gbc);
     }
 
-    private void registerListeners(){
-        btnAddSupplier.addActionListener(new BtnAddSupplierListener());
+    private void registerListeners() {
         btnExit.addActionListener(new BtnExitListener());
     }
 
@@ -181,26 +200,4 @@ public class AddSupplierPanel extends JPanel{
         }
     }
 
-    private class BtnAddSupplierListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String supplierName = txtSupplierName.getText();
-            String supplierPhone = txtSupplierPhone.getText();
-            String supplierAddressLine = txtSupplierAddress.getText();
-            String supplierCity = txtSupplierCity.getText();
-            int countryIndex = cmbBoxCountries.getSelectedIndex();
-            String supplierCountry = String.valueOf(cmbBoxCountries.getItemAt(countryIndex));
-
-            String supplierAddress = supplierAddressLine + ", " + supplierCity + ", " + supplierCountry;
-
-            if(!supplierName.isEmpty() && !supplierPhone.isEmpty() && !supplierAddressLine.isEmpty() &&!supplierCity.isEmpty()){
-                controller.sendSupplierCredentials(supplierName, supplierAddress, supplierPhone);
-                addSupplierFrame.setVisible(false);
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Enter all details!");
-            }
-        }
-    }
 }

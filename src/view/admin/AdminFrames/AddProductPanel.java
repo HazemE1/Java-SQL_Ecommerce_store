@@ -1,6 +1,7 @@
 package view.admin.AdminFrames;
 
 import controller.Controller;
+import model.Supplier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class AddProductPanel extends JPanel {
     private JTextField txtProductCode;
     private JTextField txtProductQuantity;
     private JTextField txtProductBasePrice;
-    private JComboBox<String> cmbBoxSupplier;
+    private JComboBox<Supplier> cmbBoxSupplier;
 
     private JButton btnAddProduct;
     private JButton btnExit;
@@ -87,7 +88,7 @@ public class AddProductPanel extends JPanel {
         lblProductSupplier.setMinimumSize(new Dimension(120, 20));
         lblProductSupplier.setPreferredSize(new Dimension(120, 20));
 
-        cmbBoxSupplier = new JComboBox<>();
+        cmbBoxSupplier = new JComboBox<>(controller.getSuppliers().toArray(new Supplier[0]));
 
         cmbBoxSupplier.setMinimumSize(new Dimension(120, 20));
         cmbBoxSupplier.setPreferredSize(new Dimension(120, 20));
@@ -199,8 +200,14 @@ public class AddProductPanel extends JPanel {
             String productCode = txtProductCode.getText();
 
             if (!productName.isEmpty() && !productCode.isEmpty() && productQuantity > -1 && productPrice > -1) {
-                controller.sendProductInformation(productName, productQuantity, productPrice, productSupplier, productCode);
+                boolean done = controller.newProduct(productName, productQuantity, productPrice, productSupplier, productCode);
+                if (!done) {
+                    JOptionPane.showMessageDialog(null, "There is already a product with that code!");
+                    return;
+                }
+
                 controller.updateProductList();
+                addProductFrame.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Enter all details!");
             }

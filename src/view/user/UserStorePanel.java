@@ -1,14 +1,14 @@
 package view.user;
 
+import controller.Controller;
+import model.Product;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UserStorePanel extends JPanel {
     private UserMainPanel userMainPanel;
     private JList listProducts;
-    private DefaultListModel<String> defaultListModel;
     private JScrollPane scrollPane;
 
     int productsAdded;
@@ -20,14 +20,12 @@ public class UserStorePanel extends JPanel {
     private JButton btnAddProduct;
 
 
-    public UserStorePanel(UserMainPanel userMainPanel){
+    public UserStorePanel(UserMainPanel userMainPanel) {
         this.userMainPanel = userMainPanel;
         productsAdded = 0;
 
         initializeComponents();
-        updateProductList();
         initializeGUI();
-        registerListeners();
     }
 
     private void initializeComponents() {
@@ -38,10 +36,7 @@ public class UserStorePanel extends JPanel {
         txtSearch.setMinimumSize(new Dimension(400, 25));
         txtSearch.setToolTipText("Search for products by code, name or supplier...");
 
-
-        defaultListModel = new DefaultListModel<>();
-
-        listProducts = new JList<>(defaultListModel);
+        listProducts = new JList<>(Controller.getInstance().getProducts().toArray());
         listProducts.setSize(new Dimension(900, 300));
         listProducts.setPreferredSize(new Dimension(900, 300));
         listProducts.setMinimumSize(new Dimension(900, 300));
@@ -64,6 +59,7 @@ public class UserStorePanel extends JPanel {
         btnUpdate.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnUpdate.setOpaque(true);
         btnUpdate.setBorderPainted(false);
+        btnUpdate.addActionListener(p -> Controller.getInstance().updateProductList());
 
         btnAddProduct = new JButton("Add product");
         btnAddProduct.setSize(new Dimension(200, 25));
@@ -71,21 +67,25 @@ public class UserStorePanel extends JPanel {
         btnAddProduct.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnAddProduct.setOpaque(true);
         btnAddProduct.setBorderPainted(false);
+        btnAddProduct.addActionListener(p -> {
+            if (listProducts.getSelectedValue() == null) {
+                JOptionPane.showMessageDialog(null, "You need to select a product first!");
+                return;
+            }
+
+            Product product = (Product) listProducts.getSelectedValue();
+            Product userProduct = product.newUserProduct(Integer.parseInt(JOptionPane.showInputDialog("How many of this products do you want to add")));
+            Controller.getInstance().getUser().getCart().addProductToOrder(userProduct);
+        });
     }
 
     private void initializeGUI() {
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(600,500));
-        setMaximumSize(new Dimension(600,500));
-        setMinimumSize(new Dimension(600,500));
+        setPreferredSize(new Dimension(600, 500));
+        setMaximumSize(new Dimension(600, 500));
+        setMinimumSize(new Dimension(600, 500));
 
         GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.insets = new Insets(0, 0, 50, 0);
-
-        gbc.gridy = 0;
-        gbc.gridx = 0;
-        gbc.gridwidth = 2;
 
         gbc.insets = new Insets(0, 0, 0, 0);
 
@@ -116,26 +116,70 @@ public class UserStorePanel extends JPanel {
     }
 
 
-    public void updateProductList(){
-        defaultListModel.removeAllElements();
-
+    public UserMainPanel getUserMainPanel() {
+        return userMainPanel;
     }
 
-
-
-    public void updateSearchedProducts(String searchedCode, String searchedSupplier, String searchedProduct){
-        defaultListModel.removeAllElements();
-
-        if(defaultListModel.isEmpty()){
-            defaultListModel.addElement("No products found");
-        }
+    public void setUserMainPanel(UserMainPanel userMainPanel) {
+        this.userMainPanel = userMainPanel;
     }
 
-    private void registerListeners(){
-        btnSearch.addActionListener(new BtnSearchActionListener());
-        btnUpdate.addActionListener(new BtnUpdateActionListener());
-        btnAddProduct.addActionListener(new BtnAddProductListener());
+    public JList getListProducts() {
+        return listProducts;
     }
+
+    public void setListProducts(JList listProducts) {
+        this.listProducts = listProducts;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
+    public int getProductsAdded() {
+        return productsAdded;
+    }
+
+    public void setProductsAdded(int productsAdded) {
+        this.productsAdded = productsAdded;
+    }
+
+    public JTextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public void setTxtSearch(JTextField txtSearch) {
+        this.txtSearch = txtSearch;
+    }
+
+    public JButton getBtnSearch() {
+        return btnSearch;
+    }
+
+    public void setBtnSearch(JButton btnSearch) {
+        this.btnSearch = btnSearch;
+    }
+
+    public JButton getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    public void setBtnUpdate(JButton btnUpdate) {
+        this.btnUpdate = btnUpdate;
+    }
+
+    public JButton getBtnAddProduct() {
+        return btnAddProduct;
+    }
+
+    public void setBtnAddProduct(JButton btnAddProduct) {
+        this.btnAddProduct = btnAddProduct;
+    }
+
 
     public static boolean isParsable(String searchedCode) {
         try {
@@ -143,76 +187,6 @@ public class UserStorePanel extends JPanel {
             return true;
         } catch (final NumberFormatException e) {
             return false;
-        }
-    }
-
-    private class BtnSearchActionListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String searchedCode = txtSearch.getText();
-            String searchedSupplier = txtSearch.getText();
-            String searchedProduct = txtSearch.getText();
-
-            if(isParsable(searchedCode)){
-                searchedProduct = null;
-                searchedSupplier = null;
-            }
-            else {
-                searchedCode = null;
-            }
-
-            System.out.println(searchedCode + searchedProduct + searchedSupplier);
-
-            if(!txtSearch.getText().isEmpty()){
-                updateSearchedProducts(searchedCode, searchedSupplier, searchedProduct);
-            } else {
-                updateProductList();
-            }
-        }
-    }
-
-    private class BtnUpdateActionListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            updateProductList();
-        }
-    }
-
-    private int getIdFromString(){
-        if(!listProducts.isSelectionEmpty()){
-            String str = String.valueOf(listProducts.getSelectedValue());
-            String result = str.substring(6, str.indexOf("|")-1);
-            System.out.println(result);
-            return Integer.parseInt(result);
-        } else {
-            JOptionPane.showMessageDialog(null, "Select a product before adding!");
-            return -1;
-        }
-
-    }
-
-    private class BtnAddProductListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                if(getIdFromString() > 0){
-                    int nbrOfItems = Integer.parseInt(JOptionPane.showInputDialog("How many items?"));
-                    int productID = getIdFromString();
-                    if(userMainPanel.checkQuantity(nbrOfItems, productID)){
-                        JOptionPane.showMessageDialog(null, "Product added!");
-                        productsAdded++;
-                        userMainPanel.updateShoppingCartBtn(productsAdded);
-                        updateProductList();
-                    }
-                }
-            } catch (NumberFormatException n) {
-                n.printStackTrace();
-                JOptionPane.showMessageDialog(null,"Enter a real number!");
-            }
-
         }
     }
 }

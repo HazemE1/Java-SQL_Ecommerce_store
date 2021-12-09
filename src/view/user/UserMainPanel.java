@@ -39,7 +39,6 @@ public class UserMainPanel extends JPanel {
     }
 
 
-
     public void openShoppingCart() {
         mainPanel.openShoppingcart();
     }
@@ -52,5 +51,27 @@ public class UserMainPanel extends JPanel {
         optionsPanel.updateShoppingCartBtn(productsAdded);
     }
 
+    public MainPanel getMainPanel() {
+        return mainPanel;
+    }
 
+    public void setMainPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    public UserOptionsPanel getOptionsPanel() {
+        return optionsPanel;
+    }
+
+    public void setOptionsPanel(UserOptionsPanel optionsPanel) {
+        this.optionsPanel = optionsPanel;
+    }
+
+    public UserStorePanel getUserStorePanel() {
+        return userStorePanel;
+    }
+
+    public void setUserStorePanel(UserStorePanel userStorePanel) {
+        this.userStorePanel = userStorePanel;
+    }
 }

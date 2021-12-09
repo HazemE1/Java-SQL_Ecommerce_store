@@ -1,7 +1,8 @@
 package view.admin.AdminFrames;
 
 
-import controller.*;
+import controller.Controller;
+import controller.DBController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,14 +21,14 @@ public class AddSupplierFrame extends JFrame {
 
     private void initializeComponents() {
         setTitle("Create account");
-        setSize(new Dimension(500,400));
+        setSize(new Dimension(500, 400));
         setMinimumSize(new Dimension(500, 400));
-        setPreferredSize(new Dimension(500,400));
+        setPreferredSize(new Dimension(500, 400));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
         addSupplierPanel = new AddSupplierPanel(controller, this);
     }
@@ -38,7 +39,7 @@ public class AddSupplierFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(addSupplierPanel,gbc);
+        add(addSupplierPanel, gbc);
 
         pack();
         setLocation(new Point(300, 100));

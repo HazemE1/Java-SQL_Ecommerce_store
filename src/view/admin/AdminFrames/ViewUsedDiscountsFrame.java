@@ -1,6 +1,6 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,14 +17,14 @@ public class ViewUsedDiscountsFrame extends JFrame {
 
     private void initializeComponents() {
         setTitle("Discount history");
-        setSize(new Dimension(500,500));
+        setSize(new Dimension(500, 500));
         setMinimumSize(new Dimension(500, 500));
-        setPreferredSize(new Dimension(500,500));
+        setPreferredSize(new Dimension(500, 500));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
         viewUsedDiscountsPanel = new ViewUsedDiscountsPanel(controller, this);
     }

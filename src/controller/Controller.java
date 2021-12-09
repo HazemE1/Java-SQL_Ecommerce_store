@@ -7,12 +7,21 @@ import view.main.MainPanel;
 import view.user.CreateAccountFrame;
 import view.user.ShoppingCartFrame;
 
+import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Controller {
 
     private DBController dbController;
+    protected static Controller instance;
+
+    public static Controller getInstance() {
+        if (instance == null)
+            instance = new Controller();
+        return instance;
+    }
+
     private MainFrame mainFrame;
     private MainPanel mainPanel;
     private CreateAccountFrame createAccountFrame;
@@ -29,27 +38,47 @@ public class Controller {
     private Set<Product> products;
     private Set<Discount> discounts;
     private Set<Order> orders;
-    private Order order;
 
     private User user;
 
     public Controller() {
+        System.out.println("HEREE");
         suppliers = new HashSet<>();
         products = new HashSet<>();
         discounts = new HashSet<>();
+        orders = new HashSet<>();
 
+
+    }
+
+    public void setUp() {
         dbController = DBController.getInstance();
         suppliers.addAll(dbController.fetchAllSuppliers());
         products.addAll(dbController.fetchAllProducts());
         orders.addAll(dbController.fetchAllOrders());
         discounts.addAll(dbController.fetchAllDiscounts());
 
-        order = new Order();
 
         mainFrame = new MainFrame(this);
         mainPanel = new MainPanel(this);
+
+        applyDisccounts();
+
     }
 
+    public void applyDisccounts() {
+        for (Discount discount : discounts) {
+            discount.applyDiscount();
+        }
+    }
+
+    public Product getProductById(String id) {
+        for (Product product : products) {
+            if (product.getProductID() == id)
+                return product;
+        }
+        return null;
+    }
 
     public void createNormalUser(User regularUser) {
         user = regularUser;
@@ -59,55 +88,39 @@ public class Controller {
 
     public void loginUser(User user) {
         this.user = user;
-        loginUser();
+        openUserView();
     }
 
-    public void loginUser() {
+    public void openUserView() {
         if (user.getRole() == Roles.User)
             mainPanel.updateUserView();
         else mainPanel.updateAdminView();
+        updateProductList();
     }
 
-    public void sendSupplierCredentials(String supplierName, String supplierAddress, String supplierPhone) {
-        Supplier supplier = new Supplier(supplierName, supplierAddress, supplierPhone);
-        dbController.addSupplier(supplier);
-        this.suppliers.add(supplier);
-    }
-
-    public void sendProductInformation(String productName, int productQuantity, int productPrice, String productSupplier, String pCode) {
-        Product product = new Product(productName, productQuantity, productPrice, productSupplier, pCode);
-        dbController.addProduct(product);
-        this.products.add(product);
-        updateView();
-    }
-
-
-    public void sendDiscountInformation(int discountCode, double discountPercentage, String discountReason) {
-        Discount discount = new Discount(discountCode, discountPercentage, discountReason);
-        dbController.addDiscount(discount);
-        this.discounts.add(discount);
-    }
-
-    public void sendToDelete(String productNameToDelete) {
-        dbController.deleteProduct(productNameToDelete);
-    }
-
-    public void sendToUpdateQuantity(int newQuantity, String productNameToUpdate) {
-        dbController.updateQuantity(newQuantity, productNameToUpdate);
-    }
-
-    public void sendToAddDiscountPeriod(String startDate, String endDate, String productNameToUpdate, String discountToSetDate) {
-        dbController.AddDiscountUnusedPeriod(startDate, endDate, productNameToUpdate, discountToSetDate);
-    }
 
     public boolean checkQuantity(int nbrOfItems, int productID) {
         return dbController.checkQuantity(nbrOfItems, productID);
     }
 
     public void updateProductList() {
-        mainPanel.updateProductList();
+        if (user == null)
+            mainPanel.getPnlStore().getListProducts().setListData(getProducts().toArray());
+        else if (user.getRole() == Roles.Admin)
+            mainPanel.getPnlAdminMain().getAdminStorePanel().getListProducts().setListData(getProducts().toArray(new Product[0]));
+        else
+            mainPanel.getPnlUserMain().getUserStorePanel().getListProducts().setListData(getProducts().toArray(new Product[0]));
+
     }
 
+
+    public Product getProduct(String id) {
+        for (Product product : products) {
+            if (product.getProductID().equalsIgnoreCase(id))
+                return product;
+        }
+        return null;
+    }
 
     public void openCreateAccountWindow() {
         createAccountFrame = new CreateAccountFrame(this, dbController);
@@ -242,7 +255,6 @@ public class Controller {
     }
 
     private void updateView() {
-        mainPanel.getPnlStore().get
     }
 
     public Set<Supplier> getSuppliers() {
@@ -277,15 +289,8 @@ public class Controller {
         this.orders = orders;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     public User getUser() {
+
         return user;
     }
 
@@ -297,4 +302,67 @@ public class Controller {
         return Countries.values();
     }
 
+    public boolean newSupplier(String supplierName, String supplierAddress, String supplierPhone) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierName().equalsIgnoreCase(supplierName)) {
+                System.out.println(supplier);
+                System.out.println(supplierName);
+                return false;
+            }
+        }
+        Supplier supplier = new Supplier(supplierName, supplierAddress, supplierPhone);
+        supplier.saveToDatabase();
+        suppliers.add(supplier);
+
+        return true;
+    }
+
+    public boolean newDiscount(String code, int percentage, String reason) {
+        for (Discount discount : discounts) {
+            if (discount.getDiscountCode().equalsIgnoreCase(code)) {
+                return false;
+            }
+        }
+        Discount discount = new Discount(code, percentage, reason);
+        discount.saveToDatabase();
+        discounts.add(discount);
+        return true;
+    }
+
+    public boolean newProduct(String productName, int productQuantity, int productPrice, String productSupplier, String productID) {
+        for (Product product : products) {
+            if (product.getProductID().equalsIgnoreCase(productID)) {
+                return false;
+            }
+        }
+        Product product = new Product(productName, productQuantity, productPrice, productSupplier, productID);
+        product.saveToDatabase();
+        products.add(product);
+        return true;
+    }
+
+    public void deleteProduct(Object selectedItem) {
+        products.remove(selectedItem);
+        ((Product) selectedItem).deleteFromDatabase();
+        updateProductList();
+    }
+
+    public void updateQuantityForProduct(Product product, int quantity) {
+        product.setProductQuantity(quantity);
+        product.updateProduct();
+        updateProductList();
+    }
+
+    public void placeOrder() {
+        if (user.getCart().getItems().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You dont have any products in your Cart.");
+            return;
+        }
+        user.getCart().setStatus(OrderStatus.CREATED);
+
+        user.getCart().saveToDatabase();
+        JOptionPane.showMessageDialog(null, "Orderd placed.");
+        user.setCart(new Order(user.getUserName()));
+
+    }
 }

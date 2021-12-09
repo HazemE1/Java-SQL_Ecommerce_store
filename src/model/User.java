@@ -1,12 +1,9 @@
 package model;
 
-import controller.DBController;
-
-import java.util.List;
 import java.util.Set;
 
 public class User {
-    private Order cart;
+    private Order cart = new Order(this.getUserName());
     private Set<Order> orderHistory;
 
     private String userName;
@@ -50,11 +47,7 @@ public class User {
     }
 
     public Set<Order> getOrderHistory() {
-        DBController dbController = DBController.getInstance();
-
-
-
-
+        return orderHistory;
     }
 
     public String getUserName() {
@@ -137,13 +130,18 @@ public class User {
         this.role = role;
     }
 
-    public List<Product> getCart() {
+    public Order getCart() {
         return cart;
     }
 
-    public void setCart(List<Product> cart) {
+    public void setCart(Order cart) {
         this.cart = cart;
     }
+
+    public void setOrderHistory(Set<Order> orderHistory) {
+        this.orderHistory = orderHistory;
+    }
+
 
     @Override
     public String toString() {

@@ -16,7 +16,8 @@ public class AddDiscountPanel extends JPanel {
     private JLabel lblDiscountReason;
 
     private JTextField txtDiscountCode;
-    private JTextField txtDiscountPercentage;
+    private JSpinner spinnerDiscountPercentage;
+
     private JTextField txtDiscountReason;
 
     private JButton btnAddDiscount;
@@ -33,34 +34,35 @@ public class AddDiscountPanel extends JPanel {
 
     private void initializeComponents() {
         lblDiscountCode = new JLabel("Discount code: ");
-        lblDiscountCode.setMinimumSize(new Dimension(120,20));
-        lblDiscountCode.setPreferredSize(new Dimension(120,20));
+        lblDiscountCode.setMinimumSize(new Dimension(120, 20));
+        lblDiscountCode.setPreferredSize(new Dimension(120, 20));
 
         txtDiscountCode = new JTextField();
-        txtDiscountCode.setMinimumSize(new Dimension(120,20));
-        txtDiscountCode.setPreferredSize(new Dimension(120,20));
+        txtDiscountCode.setMinimumSize(new Dimension(120, 20));
+        txtDiscountCode.setPreferredSize(new Dimension(120, 20));
 
         txtDiscountCode.setOpaque(true);
         txtDiscountCode.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblDiscountPercentage = new JLabel("Discount percentage: ");
-        lblDiscountPercentage.setMinimumSize(new Dimension(120,20));
-        lblDiscountPercentage.setPreferredSize(new Dimension(120,20));
+        lblDiscountPercentage.setMinimumSize(new Dimension(120, 20));
+        lblDiscountPercentage.setPreferredSize(new Dimension(120, 20));
 
-        txtDiscountPercentage = new JTextField();
-        txtDiscountPercentage.setMinimumSize(new Dimension(120,20));
-        txtDiscountPercentage.setPreferredSize(new Dimension(120,20));
+        spinnerDiscountPercentage = new JSpinner();
+        spinnerDiscountPercentage.setModel(new SpinnerNumberModel(0, 0, 100, 10));
+        spinnerDiscountPercentage.setMinimumSize(new Dimension(120, 20));
+        spinnerDiscountPercentage.setPreferredSize(new Dimension(120, 20));
 
-        txtDiscountPercentage.setOpaque(true);
-        txtDiscountPercentage.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        spinnerDiscountPercentage.setOpaque(true);
+        spinnerDiscountPercentage.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
         lblDiscountReason = new JLabel("Discount reason: ");
-        lblDiscountReason.setMinimumSize(new Dimension(120,20));
-        lblDiscountReason.setPreferredSize(new Dimension(120,20));
+        lblDiscountReason.setMinimumSize(new Dimension(120, 20));
+        lblDiscountReason.setPreferredSize(new Dimension(120, 20));
 
         txtDiscountReason = new JTextField();
-        txtDiscountReason.setMinimumSize(new Dimension(120,20));
-        txtDiscountReason.setPreferredSize(new Dimension(120,20));
+        txtDiscountReason.setMinimumSize(new Dimension(120, 20));
+        txtDiscountReason.setPreferredSize(new Dimension(120, 20));
         txtDiscountReason.setOpaque(true);
         txtDiscountReason.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
@@ -70,6 +72,29 @@ public class AddDiscountPanel extends JPanel {
         btnAddDiscount.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnAddDiscount.setOpaque(true);
         btnAddDiscount.setBorderPainted(false);
+        btnAddDiscount.addActionListener(l -> {
+            String discountCode = txtDiscountCode.getText();
+            String discountReason = txtDiscountReason.getText();
+            int discountPercentage = (int) spinnerDiscountPercentage.getValue();
+            if (!discountReason.isEmpty() && !discountCode.isEmpty() && discountPercentage != 0) {
+                boolean done = controller.newDiscount(
+                        discountCode,
+                        discountPercentage,
+                        discountReason);
+
+
+                if (!done) {
+                    JOptionPane.showMessageDialog(null, "There is already a discount with that code!");
+                    return;
+                }
+
+                this.addDiscountFrame.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Enter all details!");
+                return;
+            }
+
+        });
 
         btnExit = new JButton("Exit");
         btnExit.setSize(new Dimension(200, 25));
@@ -83,8 +108,8 @@ public class AddDiscountPanel extends JPanel {
     private void initializeGUI() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(500, 400));
-        setMaximumSize(new Dimension(500,400));
-        setMinimumSize(new Dimension(500,400));
+        setMaximumSize(new Dimension(500, 400));
+        setMinimumSize(new Dimension(500, 400));
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -104,7 +129,7 @@ public class AddDiscountPanel extends JPanel {
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(txtDiscountPercentage, gbc);
+        add(spinnerDiscountPercentage, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -125,8 +150,7 @@ public class AddDiscountPanel extends JPanel {
         add(btnExit, gbc);
     }
 
-    private void registerListeners(){
-        btnAddDiscount.addActionListener(new AddDiscountPanel.BtnAddDiscountListener());
+    private void registerListeners() {
         btnExit.addActionListener(new BtnExitListener());
     }
 
@@ -138,22 +162,4 @@ public class AddDiscountPanel extends JPanel {
         }
     }
 
-    private class BtnAddDiscountListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int discountCode = Integer.parseInt(txtDiscountCode.getText());
-            double discountPercentageRaw = Double.parseDouble(txtDiscountPercentage.getText());
-            String discountReason = txtDiscountReason.getText();
-
-            double discountPercentage = discountPercentageRaw/100;
-
-            if(!discountReason.isEmpty() && discountCode > -1 && discountPercentageRaw > -1){
-                controller.sendDiscountInformation(discountCode, discountPercentage, discountReason);
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Enter all details!");
-            }
-        }
-    }
 }

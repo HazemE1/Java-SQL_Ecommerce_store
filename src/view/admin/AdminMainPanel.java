@@ -60,8 +60,24 @@ public class AdminMainPanel extends JPanel {
         mainPanel.openViewUsedDiscountsFrame();
     }
 
-    public void updateProductList() {
+
+    public MainPanel getMainPanel() {
+        return mainPanel;
     }
 
+    public OptionsPanel getOptionsPanel() {
+        return optionsPanel;
+    }
 
+    public void setOptionsPanel(OptionsPanel optionsPanel) {
+        this.optionsPanel = optionsPanel;
+    }
+
+    public AdminStorePanel getAdminStorePanel() {
+        return adminStorePanel;
+    }
+
+    public void setAdminStorePanel(AdminStorePanel adminStorePanel) {
+        this.adminStorePanel = adminStorePanel;
+    }
 }

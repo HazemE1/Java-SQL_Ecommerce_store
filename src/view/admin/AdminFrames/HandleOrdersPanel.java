@@ -1,6 +1,9 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
+import model.Order;
+import model.OrderStatus;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,9 +14,8 @@ public class HandleOrdersPanel extends JPanel {
     private HandleOrdersFrame handleOrdersFrame;
 
     private JLabel lblOrders;
-    private JList<String> listOrders;
+    private JList<Order> listOrders;
     private JScrollPane scrollPane;
-    private DefaultListModel<String> defaultListModel;
 
     private JButton btnConfirmOrder;
     private JButton btnExit;
@@ -22,7 +24,6 @@ public class HandleOrdersPanel extends JPanel {
     public HandleOrdersPanel(Controller controller, HandleOrdersFrame handleOrdersFrame) {
         this.handleOrdersFrame = handleOrdersFrame;
         this.controller = controller;
-        defaultListModel = new DefaultListModel<>();
 
         initializeComponents();
         initializeGUI();
@@ -33,7 +34,7 @@ public class HandleOrdersPanel extends JPanel {
     private void initializeComponents() {
         lblOrders = new JLabel("Orders:");
 
-        listOrders = new JList<>(defaultListModel);
+        listOrders = new JList(Controller.getInstance().getOrders().toArray());
         listOrders.setPreferredSize(new Dimension(500, 200));
         listOrders.setMinimumSize(new Dimension(500, 200));
 
@@ -48,6 +49,16 @@ public class HandleOrdersPanel extends JPanel {
         btnConfirmOrder.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnConfirmOrder.setOpaque(true);
         btnConfirmOrder.setBorderPainted(false);
+        btnConfirmOrder.addActionListener(p -> {
+            if (listOrders.getSelectedValue() == null)
+                return;
+
+            Order o = listOrders.getSelectedValue();
+            o.setStatus(OrderStatus.CONFIRMED);
+            o.updateDatabase();
+
+            this.handleOrdersFrame.dispose();
+        });
 
         btnExit = new JButton("Exit");
         btnExit.setSize(new Dimension(100, 25));
@@ -60,8 +71,8 @@ public class HandleOrdersPanel extends JPanel {
     private void initializeGUI() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(600, 450));
-        setMaximumSize(new Dimension(600,450));
-        setMinimumSize(new Dimension(600,450));
+        setMaximumSize(new Dimension(600, 450));
+        setMinimumSize(new Dimension(600, 450));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -88,12 +99,11 @@ public class HandleOrdersPanel extends JPanel {
         btnExit.addActionListener(new BtnExitListener());
     }
 
-    public void updateList(){
-        defaultListModel.removeAllElements();
+    public void updateList() {
 
     }
 
-    private class BtnExitListener implements ActionListener{
+    private class BtnExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {

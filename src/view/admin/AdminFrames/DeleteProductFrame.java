@@ -1,6 +1,8 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
+import controller.DBController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,14 +21,14 @@ public class DeleteProductFrame extends JFrame {
     private void initializeComponents() {
         //Default JFrame initializations
         setTitle("Add Product");
-        setSize(new Dimension(500,300));
+        setSize(new Dimension(500, 300));
         setMinimumSize(new Dimension(500, 300));
-        setPreferredSize(new Dimension(500,300));
+        setPreferredSize(new Dimension(500, 300));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
         deleteProductPanel = new DeleteProductPanel(controller, this);
     }

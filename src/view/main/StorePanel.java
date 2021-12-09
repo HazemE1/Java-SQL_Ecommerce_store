@@ -1,5 +1,7 @@
 package view.main;
 
+import model.Product;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,8 +9,7 @@ import java.awt.event.ActionListener;
 
 public class StorePanel extends JPanel {
     private MainPanel mainPanel;
-    private JList listProducts;
-    private DefaultListModel<String> defaultListModel;
+    private JList<Product> listProducts;
     private JScrollPane scrollPane;
     private JTextField txtSearch;
     private JButton btnSearch;
@@ -28,12 +29,12 @@ public class StorePanel extends JPanel {
         txtSearch.setMinimumSize(new Dimension(400, 25));
         txtSearch.setToolTipText("Search for products by code, name or supplier...");
 
-        defaultListModel = new DefaultListModel<>();
 
-        listProducts = new JList<>(defaultListModel);
+        listProducts = new JList<>();
         listProducts.setSize(new Dimension(900, 300));
         listProducts.setPreferredSize(new Dimension(900, 300));
         listProducts.setMinimumSize(new Dimension(900, 300));
+        listProducts.setListData(mainPanel.getController().getProducts().toArray(new Product[0]));
 
         scrollPane = new JScrollPane(listProducts, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setSize(new Dimension(500, 300));
@@ -56,7 +57,7 @@ public class StorePanel extends JPanel {
 
     }
 
-    private void registerListeners(){
+    private void registerListeners() {
         btnSearch.addActionListener(new BtnSearchActionListener());
         btnUpdate.addActionListener(new BtnUpdateActionListener());
     }
@@ -72,16 +73,11 @@ public class StorePanel extends JPanel {
 
     private void initializeGUI() {
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(600,600));
-        setMaximumSize(new Dimension(600,600));
-        setMinimumSize(new Dimension(600,600));
+        setPreferredSize(new Dimension(600, 600));
+        setMaximumSize(new Dimension(600, 600));
+        setMinimumSize(new Dimension(600, 600));
 
         GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.insets = new Insets(0, 0, 50, 0);
-
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
 
         gbc.insets = new Insets(0, 0, 0, 0);
 
@@ -109,9 +105,6 @@ public class StorePanel extends JPanel {
     }
 
 
-
-
-
     private class BtnSearchActionListener implements ActionListener {
 
         @Override
@@ -120,11 +113,10 @@ public class StorePanel extends JPanel {
             String searchedSupplier = txtSearch.getText();
             String searchedProduct = txtSearch.getText();
 
-            if(isParsable(searchedCode)){
+            if (isParsable(searchedCode)) {
                 searchedProduct = null;
                 searchedSupplier = null;
-            }
-            else {
+            } else {
                 searchedCode = null;
             }
 
@@ -136,8 +128,59 @@ public class StorePanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            listProducts.setListData(mainPanel.getController().getProducts().toArray(new Product[0]));
 
         }
+    }
+
+
+    public MainPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    public void setMainPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    public JList getListProducts() {
+        return listProducts;
+    }
+
+    public void setListProducts(JList listProducts) {
+        this.listProducts = listProducts;
+    }
+
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
+    public JTextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public void setTxtSearch(JTextField txtSearch) {
+        this.txtSearch = txtSearch;
+    }
+
+    public JButton getBtnSearch() {
+        return btnSearch;
+    }
+
+    public void setBtnSearch(JButton btnSearch) {
+        this.btnSearch = btnSearch;
+    }
+
+    public JButton getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    public void setBtnUpdate(JButton btnUpdate) {
+        this.btnUpdate = btnUpdate;
     }
 }
 

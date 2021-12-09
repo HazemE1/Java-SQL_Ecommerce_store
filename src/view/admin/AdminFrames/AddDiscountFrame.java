@@ -1,6 +1,7 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
+import controller.DBController;
 
 import javax.swing.*;
 import java.awt.*;

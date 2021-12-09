@@ -1,6 +1,7 @@
 package view.user;
 
-import controller.*;
+import controller.Controller;
+import model.Product;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +12,8 @@ public class ShoppingCartPanel extends JPanel {
     private Controller controller;
     private ShoppingCartFrame shoppingCartFrame;
 
-    private JList<String> listOrderContent;
+    private JList<Product> listOrderContent;
     private JScrollPane scrollPane;
-
-    private DefaultListModel<String> defaultListModel;
 
     private JButton btnExit;
     private JButton btnPlaceOrder;
@@ -22,7 +21,7 @@ public class ShoppingCartPanel extends JPanel {
     private JLabel lblOrder;
 
 
-    public ShoppingCartPanel(Controller controller, ShoppingCartFrame shoppingCartFrame){
+    public ShoppingCartPanel(Controller controller, ShoppingCartFrame shoppingCartFrame) {
         this.controller = controller;
         this.shoppingCartFrame = shoppingCartFrame;
         initializeComponents();
@@ -31,12 +30,9 @@ public class ShoppingCartPanel extends JPanel {
     }
 
     private void initializeComponents() {
-        defaultListModel = new DefaultListModel<>();
 
-        listOrderContent = new JList<>(defaultListModel);
-        if(defaultListModel.isEmpty()){
-            defaultListModel.addElement("No products added");
-        }
+        listOrderContent = new JList(Controller.getInstance().getUser().getCart().getItems().toArray());
+
         listOrderContent.setSize(new Dimension(400, 300));
         listOrderContent.setPreferredSize(new Dimension(500, 300));
         listOrderContent.setMinimumSize(new Dimension(500, 300));
@@ -46,7 +42,7 @@ public class ShoppingCartPanel extends JPanel {
         scrollPane.setPreferredSize(new Dimension(300, 200));
         scrollPane.setMinimumSize(new Dimension(300, 200));
 
-        lblPrice = new JLabel("Price: ");
+        lblPrice = new JLabel(String.format("Price: %s:-", calcPrice()));
 
         lblOrder = new JLabel("Your order");
 
@@ -69,8 +65,8 @@ public class ShoppingCartPanel extends JPanel {
     private void initializeGUI() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(500, 500));
-        setMaximumSize(new Dimension(500,500));
-        setMinimumSize(new Dimension(500,500));
+        setMaximumSize(new Dimension(500, 500));
+        setMinimumSize(new Dimension(500, 500));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -105,7 +101,7 @@ public class ShoppingCartPanel extends JPanel {
         add(btnExit, gbc);
     }
 
-    private void registerListeners(){
+    private void registerListeners() {
         btnPlaceOrder.addActionListener(new ShoppingCartPanel.btnPlaceOrderListener());
         btnExit.addActionListener(new BtnExitListener());
     }
@@ -118,11 +114,18 @@ public class ShoppingCartPanel extends JPanel {
     }
 
 
+    public int calcPrice() {
+        int val = 0;
+        for (Product item : Controller.getInstance().getUser().getCart().getItems()) {
+            val += item.getProductPrice() * item.getProductQuantity();
+        }
+        return val;
+    }
+
     public class btnPlaceOrderListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            JOptionPane.showMessageDialog(null, "Your order is placed!");
+            Controller.getInstance().placeOrder();
         }
     }
 }

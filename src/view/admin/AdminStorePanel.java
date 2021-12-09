@@ -1,13 +1,14 @@
 package view.admin;
 
 
+import model.Product;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AdminStorePanel extends JPanel {
     private AdminMainPanel adminMainPanel;
-    private JList listProducts;
-    private DefaultListModel<String> defaultListModel;
+    private JList<Product> listProducts;
     private JScrollPane scrollPane;
 
     private JTextField txtSearch;
@@ -29,9 +30,8 @@ public class AdminStorePanel extends JPanel {
         txtSearch.setMinimumSize(new Dimension(400, 25));
         txtSearch.setToolTipText("Search for products by code, name or supplier...");
 
-        defaultListModel = new DefaultListModel<>();
 
-        listProducts = new JList<>(defaultListModel);
+        listProducts = new JList<>(adminMainPanel.getMainPanel().getController().getProducts().toArray(new Product[0]));
         listProducts.setSize(new Dimension(600, 300));
         listProducts.setPreferredSize(new Dimension(600, 300));
         listProducts.setMinimumSize(new Dimension(600, 300));
@@ -94,4 +94,51 @@ public class AdminStorePanel extends JPanel {
     }
 
 
+    public AdminMainPanel getAdminMainPanel() {
+        return adminMainPanel;
+    }
+
+    public void setAdminMainPanel(AdminMainPanel adminMainPanel) {
+        this.adminMainPanel = adminMainPanel;
+    }
+
+    public JList<Product> getListProducts() {
+        return listProducts;
+    }
+
+    public void setListProducts(JList<Product> listProducts) {
+        this.listProducts = listProducts;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
+    public JTextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public void setTxtSearch(JTextField txtSearch) {
+        this.txtSearch = txtSearch;
+    }
+
+    public JButton getBtnSearch() {
+        return btnSearch;
+    }
+
+    public void setBtnSearch(JButton btnSearch) {
+        this.btnSearch = btnSearch;
+    }
+
+    public JButton getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    public void setBtnUpdate(JButton btnUpdate) {
+        this.btnUpdate = btnUpdate;
+    }
 }

@@ -1,21 +1,23 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
+import model.Product;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DeleteProductPanel extends JPanel{
+public class DeleteProductPanel extends JPanel {
     private Controller controller;
     private DeleteProductFrame deleteProductFrame;
     private JLabel lblProductToDelete;
-    private JComboBox<String> cmbBoxProducts;
+    private JComboBox<Product> cmbBoxProducts;
     private JButton btnDeleteProduct;
     private JButton btnExit;
 
 
-    public DeleteProductPanel(Controller controller, DeleteProductFrame deleteProductFrame){
+    public DeleteProductPanel(Controller controller, DeleteProductFrame deleteProductFrame) {
         this.controller = controller;
         this.deleteProductFrame = deleteProductFrame;
         initializeComponents();
@@ -25,13 +27,13 @@ public class DeleteProductPanel extends JPanel{
 
     private void initializeComponents() {
         lblProductToDelete = new JLabel("Select product to delete");
-        lblProductToDelete.setMinimumSize(new Dimension(200,20));
-        lblProductToDelete.setPreferredSize(new Dimension(200,20));
+        lblProductToDelete.setMinimumSize(new Dimension(200, 20));
+        lblProductToDelete.setPreferredSize(new Dimension(200, 20));
 
-        cmbBoxProducts = new JComboBox<>();
+        cmbBoxProducts = new JComboBox<>(controller.getProducts().toArray(new Product[0]));
 
-        cmbBoxProducts.setMinimumSize(new Dimension(140,20));
-        cmbBoxProducts.setPreferredSize(new Dimension(140,20));
+        cmbBoxProducts.setMinimumSize(new Dimension(140, 20));
+        cmbBoxProducts.setPreferredSize(new Dimension(140, 20));
 
         cmbBoxProducts.setOpaque(true);
         cmbBoxProducts.setFont(new Font("Helvetica", Font.BOLD, 12));
@@ -42,6 +44,13 @@ public class DeleteProductPanel extends JPanel{
         btnDeleteProduct.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnDeleteProduct.setOpaque(true);
         btnDeleteProduct.setBorderPainted(false);
+        btnDeleteProduct.addActionListener(l -> {
+            controller.deleteProduct(cmbBoxProducts.getSelectedItem());
+            JOptionPane.showMessageDialog(null, "You removed the product: " + cmbBoxProducts.getSelectedItem());
+            controller.deleteProduct(cmbBoxProducts.getSelectedItem());
+
+            deleteProductFrame.setVisible(false);
+        });
 
 
         btnExit = new JButton("Exit");
@@ -56,8 +65,8 @@ public class DeleteProductPanel extends JPanel{
     private void initializeGUI() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(500, 300));
-        setMaximumSize(new Dimension(500,300));
-        setMinimumSize(new Dimension(500,300));
+        setMaximumSize(new Dimension(500, 300));
+        setMinimumSize(new Dimension(500, 300));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -79,29 +88,15 @@ public class DeleteProductPanel extends JPanel{
     }
 
     private void registerListeners() {
-        btnDeleteProduct.addActionListener(new BtnDeleteProductListener());
         btnExit.addActionListener(new BtnExitListener());
     }
 
     private class BtnExitListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             deleteProductFrame.dispose();
         }
     }
 
-    private class BtnDeleteProductListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int index = cmbBoxProducts.getSelectedIndex();
-            String productNameToDelete = String.valueOf(cmbBoxProducts.getItemAt(index));
-            cmbBoxProducts.removeItemAt(index);
-
-            controller.sendToDelete(productNameToDelete);
-            controller.updateProductList();
-        }
-    }
 }
 

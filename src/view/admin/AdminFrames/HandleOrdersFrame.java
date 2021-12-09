@@ -1,6 +1,8 @@
 package view.admin.AdminFrames;
 
-import controller.*;
+import controller.Controller;
+import controller.DBController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,14 +21,14 @@ public class HandleOrdersFrame extends JFrame {
     private void initializeComponents() {
         //Default JFrame initializations
         setTitle("Handle product");
-        setSize(new Dimension(600,450));
+        setSize(new Dimension(600, 450));
         setMinimumSize(new Dimension(600, 450));
-        setPreferredSize(new Dimension(600,450));
+        setPreferredSize(new Dimension(600, 450));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
         handleOrdersPanel = new HandleOrdersPanel(controller, this);
     }
