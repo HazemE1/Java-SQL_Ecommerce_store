@@ -31,15 +31,15 @@ public class StorePanel extends JPanel {
 
 
         listProducts = new JList<>();
-        listProducts.setSize(new Dimension(900, 300));
-        listProducts.setPreferredSize(new Dimension(900, 300));
-        listProducts.setMinimumSize(new Dimension(900, 300));
+        listProducts.setSize(new Dimension(500, 300));
+        listProducts.setPreferredSize(new Dimension(500, 300));
+        listProducts.setMinimumSize(new Dimension(500, 300));
         listProducts.setListData(mainPanel.getController().getProducts().toArray(new Product[0]));
 
         scrollPane = new JScrollPane(listProducts, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setSize(new Dimension(500, 300));
-        scrollPane.setPreferredSize(new Dimension(500, 300));
-        scrollPane.setMinimumSize(new Dimension(500, 300));
+        scrollPane.setSize(new Dimension(520, 300));
+        scrollPane.setPreferredSize(new Dimension(520, 300));
+        scrollPane.setMinimumSize(new Dimension(520, 300));
 
         btnSearch = new JButton("Search");
         btnSearch.setSize(new Dimension(100, 25));

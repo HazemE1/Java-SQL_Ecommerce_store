@@ -1,16 +1,16 @@
 package view.user;
 
 
-import controller.*;
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ShoppingCartFrame extends JFrame {
+public class OrderHistoryFrame extends JFrame {
     private Controller controller;
-    private ShoppingCartPanel shoppingCartPanel;
+    private OrderHistoryPanel orderHistoryPanel;
 
-    public ShoppingCartFrame(Controller controller) {
+    public OrderHistoryFrame(Controller controller) {
         this.controller = controller;
         initializeComponents();
         initializeGUI();
@@ -18,16 +18,16 @@ public class ShoppingCartFrame extends JFrame {
 
     private void initializeComponents() {
         //Default JFrame initializations
-        setTitle("Cart");
-        setSize(new Dimension(500,500));
-        setMinimumSize(new Dimension(500, 500));
-        setPreferredSize(new Dimension(500,500));
-         setVisible(true);
+        setTitle("Order history");
+        setSize(new Dimension(700, 500));
+        setMinimumSize(new Dimension(700, 500));
+        setPreferredSize(new Dimension(700, 500));
+        setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(1,2, 1, 0));
+        setLayout(new GridLayout(1, 2, 1, 0));
 
-        shoppingCartPanel = new ShoppingCartPanel(controller, this);
+        orderHistoryPanel = new OrderHistoryPanel(controller, this);
     }
 
     private void initializeGUI() {
@@ -36,7 +36,7 @@ public class ShoppingCartFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(shoppingCartPanel, gbc);
+        add(orderHistoryPanel, gbc);
 
         pack();
         setLocation(new Point(300, 100));

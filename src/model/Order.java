@@ -121,12 +121,13 @@ public class Order {
         for (Product item : items) {
             val += item.getProductPrice() * item.getProductQuantity();
         }
+        System.out.println(val);
         return val;
     }
 
     @Override
     public String toString() {
-        return String.format("%s | %s | %s:- | Placed from %s", getId(), getStatus().name(), calcPrice(), getOrderPlacer());
+        return String.format("%s | %s | %s pcs | %s:- | Placed from %s", getId(), getStatus().name(), items.size(), calcPrice(), getOrderPlacer());
     }
 
     public void updateDatabase() {

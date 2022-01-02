@@ -33,14 +33,14 @@ public class ShoppingCartPanel extends JPanel {
 
         listOrderContent = new JList(Controller.getInstance().getUser().getCart().getItems().toArray());
 
-        listOrderContent.setSize(new Dimension(400, 300));
+        listOrderContent.setSize(new Dimension(500, 300));
         listOrderContent.setPreferredSize(new Dimension(500, 300));
         listOrderContent.setMinimumSize(new Dimension(500, 300));
 
         scrollPane = new JScrollPane(listOrderContent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setSize(new Dimension(300, 200));
-        scrollPane.setPreferredSize(new Dimension(300, 200));
-        scrollPane.setMinimumSize(new Dimension(300, 200));
+        scrollPane.setSize(new Dimension(520, 200));
+        scrollPane.setPreferredSize(new Dimension(520, 200));
+        scrollPane.setMinimumSize(new Dimension(520, 200));
 
         lblPrice = new JLabel(String.format("Price: %s:-", calcPrice()));
 
@@ -126,6 +126,7 @@ public class ShoppingCartPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             Controller.getInstance().placeOrder();
+            shoppingCartFrame.dispose();
         }
     }
 }

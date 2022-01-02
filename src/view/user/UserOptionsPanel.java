@@ -11,7 +11,10 @@ public class UserOptionsPanel extends JPanel {
 
     private JButton btnShoppingCart;
 
-    public UserOptionsPanel(UserMainPanel userMainPanel){
+    private JButton btnOrderHistoryCart;
+
+
+    public UserOptionsPanel(UserMainPanel userMainPanel) {
         this.userMainPanel = userMainPanel;
 
         initializeComponents();
@@ -19,20 +22,28 @@ public class UserOptionsPanel extends JPanel {
         registerListeners();
     }
 
-    private void initializeComponents(){
+    private void initializeComponents() {
         btnShoppingCart = new JButton("Shopping Cart");
         btnShoppingCart.setSize(new Dimension(150, 25));
         btnShoppingCart.setPreferredSize(new Dimension(150, 25));
         btnShoppingCart.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnShoppingCart.setOpaque(true);
         btnShoppingCart.setBorderPainted(false);
+
+        btnOrderHistoryCart = new JButton("Order History");
+        btnOrderHistoryCart.setSize(new Dimension(150, 25));
+        btnOrderHistoryCart.setPreferredSize(new Dimension(150, 25));
+        btnOrderHistoryCart.setFont(new Font("Helvetica", Font.PLAIN, 12));
+        btnOrderHistoryCart.setOpaque(true);
+        btnOrderHistoryCart.setBorderPainted(false);
+        btnOrderHistoryCart.addActionListener(p -> userMainPanel.openOrderHistory());
     }
 
-    private void initializeGUI(){
+    private void initializeGUI() {
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(600,50));
-        setMaximumSize(new Dimension(600,50));
-        setMinimumSize(new Dimension(600,50));
+        setPreferredSize(new Dimension(600, 50));
+        setMaximumSize(new Dimension(600, 50));
+        setMinimumSize(new Dimension(600, 50));
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -40,6 +51,11 @@ public class UserOptionsPanel extends JPanel {
         gbc.gridy = 0;
         gbc.gridx = 0;
         add(btnShoppingCart, gbc);
+
+        gbc.gridy = 0;
+        gbc.gridx = 1;
+        add(btnOrderHistoryCart, gbc);
+
     }
 
     private void registerListeners() {

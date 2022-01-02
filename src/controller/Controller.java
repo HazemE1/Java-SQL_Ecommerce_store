@@ -5,6 +5,7 @@ import view.admin.AdminFrames.*;
 import view.main.MainFrame;
 import view.main.MainPanel;
 import view.user.CreateAccountFrame;
+import view.user.OrderHistoryFrame;
 import view.user.ShoppingCartFrame;
 
 import javax.swing.*;
@@ -37,18 +38,18 @@ public class Controller {
     private Set<Supplier> suppliers;
     private Set<Product> products;
     private Set<Discount> discounts;
+    private Set<String> discountHistory;
+
     private Set<Order> orders;
 
     private User user;
 
     public Controller() {
-        System.out.println("HEREE");
         suppliers = new HashSet<>();
         products = new HashSet<>();
         discounts = new HashSet<>();
         orders = new HashSet<>();
-
-
+        discountHistory = new HashSet<>();
     }
 
     public void setUp() {
@@ -57,13 +58,12 @@ public class Controller {
         products.addAll(dbController.fetchAllProducts());
         orders.addAll(dbController.fetchAllOrders());
         discounts.addAll(dbController.fetchAllDiscounts());
-
+        discountHistory.addAll(dbController.fetchDiscountHistory());
 
         mainFrame = new MainFrame(this);
         mainPanel = new MainPanel(this);
 
         applyDisccounts();
-
     }
 
     public void applyDisccounts() {
@@ -88,6 +88,14 @@ public class Controller {
 
     public void loginUser(User user) {
         this.user = user;
+        System.out.println(orders.size());
+        if (user.getRole() != Roles.Admin) {
+            for (Order order : orders) {
+                if (order.getOrderPlacer().equalsIgnoreCase(user.getUserName())) {
+                    user.getOrderHistory().add(order);
+                }
+            }
+        }
         openUserView();
     }
 
@@ -156,6 +164,10 @@ public class Controller {
 
     public void openShoppingCart() {
         shoppingCartFrame = new ShoppingCartFrame(this);
+    }
+
+    public void openOrderHistory() {
+        new OrderHistoryFrame(this);
     }
 
     public controller.DBController getDbController() {
@@ -359,10 +371,19 @@ public class Controller {
             return;
         }
         user.getCart().setStatus(OrderStatus.CREATED);
-
         user.getCart().saveToDatabase();
         JOptionPane.showMessageDialog(null, "Orderd placed.");
+        user.getOrderHistory().add(user.getCart());
+
         user.setCart(new Order(user.getUserName()));
 
+    }
+
+    public Set<String> getDiscountHistory() {
+        return discountHistory;
+    }
+
+    public void setDiscountHistory(Set<String> discountHistory) {
+        this.discountHistory = discountHistory;
     }
 }

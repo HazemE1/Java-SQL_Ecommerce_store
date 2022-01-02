@@ -17,9 +17,9 @@ public class ViewUsedDiscountsFrame extends JFrame {
 
     private void initializeComponents() {
         setTitle("Discount history");
-        setSize(new Dimension(500, 500));
-        setMinimumSize(new Dimension(500, 500));
-        setPreferredSize(new Dimension(500, 500));
+        setSize(new Dimension(900, 500));
+        setMinimumSize(new Dimension(900, 500));
+        setPreferredSize(new Dimension(900, 500));
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);

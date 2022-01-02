@@ -42,6 +42,9 @@ public class UserMainPanel extends JPanel {
     public void openShoppingCart() {
         mainPanel.openShoppingcart();
     }
+    public void openOrderHistory() {
+        mainPanel.openOrderHistory();
+    }
 
     public boolean checkQuantity(int nbrOfItems, int productID) {
         return mainPanel.checkQuantity(nbrOfItems, productID);

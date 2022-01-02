@@ -139,4 +139,8 @@ public class MainPanel extends JPanel {
     public void setPnlUserMain(UserMainPanel pnlUserMain) {
         this.pnlUserMain = pnlUserMain;
     }
+
+    public void openOrderHistory() {
+        controller.openOrderHistory();
+    }
 }

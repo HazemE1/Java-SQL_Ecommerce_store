@@ -1,10 +1,11 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class User {
     private Order cart = new Order(this.getUserName());
-    private Set<Order> orderHistory;
+    private Set<Order> orderHistory = new HashSet<>();
 
     private String userName;
     private String firstName;
@@ -16,8 +17,8 @@ public class User {
     private String country;
     private String phone;
     private Roles role;
-    public static String aName = "admin";
-    public static String aPass = "a1234";
+    public static String aName = " ";
+    public static String aPass = " ";
 
 
     public User() {
@@ -44,6 +45,10 @@ public class User {
         this.country = country;
         this.phone = phone;
         this.role = Roles.User;
+    }
+
+    public void loadOrderHistory() {
+
     }
 
     public Set<Order> getOrderHistory() {

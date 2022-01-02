@@ -64,6 +64,8 @@ public class Discount {
             return "";
         StringBuilder sb = new StringBuilder();
         for (Product discountedItem : discountedItems) {
+            if (discountedItem == null)
+                continue;
             sb.append(discountedItem.getProductID()).append(":");
         }
         return sb.substring(0, sb.length() - 1);
@@ -97,6 +99,8 @@ public class Discount {
     public void applyDiscount() {
         double percentage = 1 - (discountPercentage / 100.0);
         for (Product discountedItem : discountedItems) {
+            if (discountedItem == null)
+                continue;
             discountedItem.setDiscount(percentage);
         }
         Controller.getInstance().updateProductList();
@@ -109,9 +113,11 @@ public class Discount {
 
     public void addDiscount(Product product) {
         discountedItems.add(product);
-        product.setDiscount(discountPercentage);
+        DBController.getInstance().logDiscount(product, this);
+        applyDiscount();
         deleteFromDatabase();
         saveToDatabase();
-
     }
+
+
 }

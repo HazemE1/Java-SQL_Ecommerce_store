@@ -14,7 +14,6 @@ public class ViewUsedDiscountsPanel extends JPanel {
     private JList<String> listUsedDiscounts;
     private JScrollPane scrollPane;
 
-    private DefaultListModel<String> defaultListModel;
     private JButton btnExit;
 
     public ViewUsedDiscountsPanel(Controller controller, ViewUsedDiscountsFrame viewUsedDiscountsFrame) {
@@ -28,21 +27,18 @@ public class ViewUsedDiscountsPanel extends JPanel {
     }
 
     private void initializeComponents() {
-        defaultListModel = new DefaultListModel<>();
 
-        listUsedDiscounts = new JList<>(defaultListModel);
+        listUsedDiscounts = new JList<>(Controller.getInstance().getDiscountHistory().toArray(new String[0]));
 
-        if (defaultListModel.isEmpty()) {
-            defaultListModel.addElement("No previous discounts");
-        }
-        listUsedDiscounts.setSize(new Dimension(400, 400));
-        listUsedDiscounts.setPreferredSize(new Dimension(500, 400));
-        listUsedDiscounts.setMinimumSize(new Dimension(500, 400));
+
+        listUsedDiscounts.setSize(new Dimension(800, 400));
+        listUsedDiscounts.setPreferredSize(new Dimension(800, 400));
+        listUsedDiscounts.setMinimumSize(new Dimension(800, 400));
 
         scrollPane = new JScrollPane(listUsedDiscounts, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setSize(new Dimension(300, 300));
-        scrollPane.setPreferredSize(new Dimension(300, 300));
-        scrollPane.setMinimumSize(new Dimension(300, 300));
+        scrollPane.setSize(new Dimension(800, 300));
+        scrollPane.setPreferredSize(new Dimension(800, 300));
+        scrollPane.setMinimumSize(new Dimension(800, 300));
 
         btnExit = new JButton("Exit");
         btnExit.setSize(new Dimension(100, 25));
@@ -56,9 +52,9 @@ public class ViewUsedDiscountsPanel extends JPanel {
     private void initializeGUI() {
         setLayout(new GridBagLayout());
 
-        setPreferredSize(new Dimension(500, 500));
-        setMaximumSize(new Dimension(500, 500));
-        setMinimumSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(800, 500));
+        setMaximumSize(new Dimension(800, 500));
+        setMinimumSize(new Dimension(800, 500));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -77,11 +73,7 @@ public class ViewUsedDiscountsPanel extends JPanel {
     }
 
     public void updateUsedDiscountList() {
-        defaultListModel.removeAllElements();
 
-        if (defaultListModel.isEmpty()) {
-            defaultListModel.addElement("No previous discounts");
-        }
     }
 
     private class BtnExitListener implements ActionListener {

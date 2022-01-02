@@ -203,7 +203,7 @@ public class DBController {
             ResultSet set = statement.executeQuery(query);
             return set;
         } catch (SQLException e) {
-            System.out.println("err");
+            System.out.println(e);
         }
         return null;
     }
@@ -216,9 +216,27 @@ public class DBController {
         return true;
     }
 
+    public void logDiscount(Product product, Discount discount) {
+        Controller.getInstance().getDiscountHistory().add(String.format("Admin gave the product %s the discount %s at %s%s", product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%"));
+        executeQuery(String.format("INSERT INTO discount_history values ('Admin gave the product %s the discount %s at %s%s')",
+                product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%"));
+    }
 
     public boolean checkQuantity(int nbrOfItems, int productID) {
         return false;
     }
 
+    public Set<String> fetchDiscountHistory() {
+        Set<String> val = new HashSet<>();
+        ResultSet set = executeQuery("SELECT * FROM discount_history;");
+        try {
+            while (set.next()) {
+                val.add(set.getString("message"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return val;
+    }
 }
