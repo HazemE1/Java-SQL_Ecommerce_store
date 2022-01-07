@@ -12,7 +12,7 @@ CREATE TABLE customers (
 CREATE TABLE orders(
 	[confirmation] [nvarchar](10) NOT NULL,
 	[orderContent] [nvarchar](1000) NOT NULL,
-	[orderId] [varchar](50) NOT NULL,
+	[orderId] [varchar](50) NOT NULL PRIMARY KEY,
 	[username] [varchar](70) NOT NULL,
     FOREIGN KEY (username) REFERENCES customers (username)
 
@@ -40,5 +40,5 @@ CREATE TABLE products(
 );
 
 CREATE TABLE discount_history(
-	[message] [nvarchar](70) NOT NULL);
+	[message] [nvarchar](70) NOT NULL PRIMARY KEY);
 
