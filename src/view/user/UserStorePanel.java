@@ -52,6 +52,9 @@ public class UserStorePanel extends JPanel {
         btnSearch.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnSearch.setOpaque(true);
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(l -> {
+            Controller.getInstance().productSearch(txtSearch.getText());
+        });
 
         btnUpdate = new JButton("Update List");
         btnUpdate.setSize(new Dimension(200, 25));
@@ -75,6 +78,7 @@ public class UserStorePanel extends JPanel {
 
             Product product = (Product) listProducts.getSelectedValue();
             Product userProduct = product.newUserProduct(Integer.parseInt(JOptionPane.showInputDialog("How many of this products do you want to add")));
+
             Controller.getInstance().getUser().getCart().addProductToOrder(userProduct);
         });
     }

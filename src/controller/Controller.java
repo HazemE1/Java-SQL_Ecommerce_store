@@ -9,7 +9,9 @@ import view.user.OrderHistoryFrame;
 import view.user.ShoppingCartFrame;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Controller {
@@ -61,20 +63,20 @@ public class Controller {
         discountHistory.addAll(dbController.fetchDiscountHistory());
 
         mainFrame = new MainFrame(this);
-        mainPanel = new MainPanel(this);
-
+        this.mainPanel = mainFrame.getMainPanel();
         applyDisccounts();
     }
 
     public void applyDisccounts() {
         for (Discount discount : discounts) {
             discount.applyDiscount();
+            System.out.println(discount);
         }
     }
 
     public Product getProductById(String id) {
         for (Product product : products) {
-            if (product.getProductID() == id)
+            if (product.getProductID().equals(id))
                 return product;
         }
         return null;
@@ -372,6 +374,7 @@ public class Controller {
         }
         user.getCart().setStatus(OrderStatus.CREATED);
         user.getCart().saveToDatabase();
+        user.getCart().setOrderPlacer(user.getUserName());
         JOptionPane.showMessageDialog(null, "Orderd placed.");
         user.getOrderHistory().add(user.getCart());
 
@@ -385,5 +388,31 @@ public class Controller {
 
     public void setDiscountHistory(Set<String> discountHistory) {
         this.discountHistory = discountHistory;
+    }
+
+    public void fetchStoreData() {
+        products.clear();
+        products.addAll(DBController.getInstance().fetchAllProducts());
+        applyDisccounts();
+        updateProductList();
+    }
+
+    public void productSearch(String text) {
+        List<Product> val = new ArrayList<>();
+        if (!text.isEmpty())
+            products.forEach(p -> {
+                if (p.getProductID().startsWith(text) || p.getProductName().startsWith(text)) {
+                    val.add(p);
+                }
+            });
+        else
+            val.addAll(products);
+        if (user == null)
+            mainPanel.getPnlStore().getListProducts().setListData(val.toArray(new Product[0]));
+        else if (user.getRole() == Roles.Admin)
+            mainPanel.getPnlAdminMain().getAdminStorePanel().getListProducts().setListData(val.toArray(new Product[0]));
+        else
+            mainPanel.getPnlUserMain().getUserStorePanel().getListProducts().setListData(val.toArray(new Product[0]));
+
     }
 }

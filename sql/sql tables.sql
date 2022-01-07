@@ -1,48 +1,44 @@
 CREATE TABLE customers (
-username VARCHAR(70) PRIMARY KEY, 
-firstname VARCHAR(70), 
-lastname VARCHAR(70),	
-country VARCHAR(70), 
-city VARCHAR(70), 
-adress VARCHAR(70), 
-pass  VARCHAR(70), 
-email VARCHAR(70), 
-phonenr VARCHAR(70));
+	[username] [varchar](70) NOT NULL PRIMARY KEY,
+	[firstname] [varchar](70) NOT NULL,
+	[lastname] [varchar](70) NOT NULL,
+	[country] [varchar](70) NOT NULL,
+	[city] [varchar](70) NOT NULL,
+	[adress] [varchar](70) NOT NULL,
+	[pass] [varchar](70) NOT NULL,
+	[email] [varchar](70) NOT NULL,
+	[phonenr] [varchar](70) NOT NULL);
 
 CREATE TABLE orders(
-    confirmation nvarchar NOT NULL,
-    orderContent nvarchar NOT NULL,
-    orderId int PRIMARY KEY, 
-    username VARCHAR(70) NOT NULL,
+	[confirmation] [nvarchar](10) NOT NULL,
+	[orderContent] [nvarchar](1000) NOT NULL,
+	[orderId] [varchar](50) NOT NULL,
+	[username] [varchar](70) NOT NULL,
     FOREIGN KEY (username) REFERENCES customers (username)
 
 );
  CREATE TABLE discount(
-    code nvarchar primary key NOT NULL,
-    [percentage] int,
-	[description] nvarchar
+	[code] [nvarchar](70) NOT NULL PRIMARY KEY,
+	[percentage] [int] NOT NULL,
+	[description] [nvarchar](70) NOT NULL,
+	[products] [nvarchar](70) NOT NULL,
  );
 
  CREATE TABLE suppliers(
-    [name] nvarchar primary key NOT NULL,
-    tel varchar,
-    [address] nvarchar NOT NULL,
+	[name] [nvarchar](70) NOT NULL PRIMARY KEY,
+	[tel] [varchar](70) NULL,
+	[address] [nvarchar](70) NOT NULL,
 );
 
 CREATE TABLE products(
-    pName nvarchar  NOT NULL, -- product name
-    pCode int  PRIMARY KEY, -- product Code
-    stockTotal int NOT NULL, -- all product in stock
-    basePrice int,
-	supplier nvarchar,
+	[pName] [nvarchar](70) NOT NULL,
+	[pCode] [nvarchar](4) NOT NULL PRIMARY KEY,
+	[stockTotal] [int] NOT NULL,
+	[basePrice] [int] NULL,
+	[supplier] [nvarchar](70) NULL,
 	FOREIGN KEY (supplier) REFERENCES suppliers ([name])
 );
 
 CREATE TABLE discount_history(
-    startDate date,
-	endDate date,
-    price int ,
-    [percentage] int,
-    product_codes nvarchar
-);
+	[message] [nvarchar](70) NOT NULL);
 

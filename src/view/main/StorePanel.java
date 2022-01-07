@@ -1,5 +1,6 @@
 package view.main;
 
+import controller.Controller;
 import model.Product;
 
 import javax.swing.*;
@@ -47,6 +48,9 @@ public class StorePanel extends JPanel {
         btnSearch.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnSearch.setOpaque(true);
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(l -> {
+            Controller.getInstance().productSearch(txtSearch.getText());
+        });
 
         btnUpdate = new JButton("Update List");
         btnUpdate.setSize(new Dimension(200, 25));
@@ -54,6 +58,7 @@ public class StorePanel extends JPanel {
         btnUpdate.setFont(new Font("Helvetica", Font.PLAIN, 12));
         btnUpdate.setOpaque(true);
         btnUpdate.setBorderPainted(false);
+        btnUpdate.addActionListener(l -> Controller.getInstance().fetchStoreData());
 
     }
 

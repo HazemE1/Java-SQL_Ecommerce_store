@@ -91,7 +91,6 @@ public class DBController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        val.add(new Discount("No discount", 0, "No discount"));
 
         return val;
     }

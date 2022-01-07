@@ -17,7 +17,7 @@ public class User {
     private String country;
     private String phone;
     private Roles role;
-    public static String aName = " ";
+    public static String aName = "ADMIN";
     public static String aPass = " ";
 
 
