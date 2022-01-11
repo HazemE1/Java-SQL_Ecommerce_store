@@ -24,7 +24,6 @@ public class AddSupplierFrame extends JFrame {
         setSize(new Dimension(500, 400));
         setMinimumSize(new Dimension(500, 400));
         setPreferredSize(new Dimension(500, 400));
-        setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);

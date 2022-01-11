@@ -45,11 +45,13 @@ public class DeleteProductPanel extends JPanel {
         btnDeleteProduct.setOpaque(true);
         btnDeleteProduct.setBorderPainted(false);
         btnDeleteProduct.addActionListener(l -> {
-            controller.deleteProduct(cmbBoxProducts.getSelectedItem());
-            JOptionPane.showMessageDialog(null, "You removed the product: " + cmbBoxProducts.getSelectedItem());
-            controller.deleteProduct(cmbBoxProducts.getSelectedItem());
+            boolean done = controller.deleteProduct((Product) cmbBoxProducts.getSelectedItem());
+            if (done)
+                JOptionPane.showMessageDialog(null, "You removed the product: " + cmbBoxProducts.getSelectedItem());
+            else
+                JOptionPane.showMessageDialog(null, "The product " + ((Product) cmbBoxProducts.getSelectedItem()).getProductName() + " could not be removed since it has been ordered before.");
 
-            deleteProductFrame.setVisible(false);
+            deleteProductFrame.dispose();
         });
 
 

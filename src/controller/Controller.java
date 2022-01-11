@@ -355,10 +355,18 @@ public class Controller {
         return true;
     }
 
-    public void deleteProduct(Object selectedItem) {
+    public boolean deleteProduct(Product selectedItem) {
+        for (Order order : orders) {
+            for (Product item : order.getItems()) {
+                if (item.getProductID().equals(selectedItem.getProductID()))
+                    return false;
+            }
+        }
         products.remove(selectedItem);
         ((Product) selectedItem).deleteFromDatabase();
         updateProductList();
+
+        return true;
     }
 
     public void updateQuantityForProduct(Product product, int quantity) {
@@ -411,7 +419,7 @@ public class Controller {
         List<Product> val = new ArrayList<>();
         if (!text.isEmpty())
             products.forEach(p -> {
-                if (p.getProductID().startsWith(text) || p.getProductName().startsWith(text)) {
+                if (p.getProductID().startsWith(text) || p.getProductName().startsWith(text) || p.getProductSupplier().startsWith(text)) {
                     val.add(p);
                 }
             });

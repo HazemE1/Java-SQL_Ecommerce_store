@@ -16,8 +16,6 @@ public class DBController {
 
     public DBController() {
         connect();
-
-
     }
 
     public Set<Order> fetchAllOrders() {
@@ -67,7 +65,6 @@ public class DBController {
         try {
             while (set.next()) {
                 val.add(new Supplier(set.getString("name"), set.getString("address"), set.getString("tel")));
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -204,7 +201,7 @@ public class DBController {
             ResultSet set = statement.executeQuery(query);
             return set;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println();
         }
         return null;
     }

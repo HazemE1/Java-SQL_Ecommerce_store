@@ -24,7 +24,6 @@ public class DeleteProductFrame extends JFrame {
         setSize(new Dimension(500, 300));
         setMinimumSize(new Dimension(500, 300));
         setPreferredSize(new Dimension(500, 300));
-        setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);

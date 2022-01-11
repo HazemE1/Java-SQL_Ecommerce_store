@@ -24,7 +24,6 @@ public class HandleProductFrame extends JFrame {
         setSize(new Dimension(500, 500));
         setMinimumSize(new Dimension(500, 500));
         setPreferredSize(new Dimension(500, 500));
-        setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);

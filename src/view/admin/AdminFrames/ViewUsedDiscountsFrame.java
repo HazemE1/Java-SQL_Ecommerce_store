@@ -20,7 +20,6 @@ public class ViewUsedDiscountsFrame extends JFrame {
         setSize(new Dimension(900, 500));
         setMinimumSize(new Dimension(900, 500));
         setPreferredSize(new Dimension(900, 500));
-        setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
         setBackground(Color.WHITE);
