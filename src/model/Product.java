@@ -83,7 +83,7 @@ public class Product implements Cloneable {
 
     @Override
     public String toString() {
-        if (productPrice == -1)
+        if (productBasePrice == -1)
             return String.format("%s |  %s:- | %s Pcs| %s", getProductName(), getProductPrice(), getProductQuantity(), getProductID());
         else if (productPrice != productBasePrice)
             return String.format("%s | %s:- NOW: %s:- | %s  In stock | %s", getProductName(), getProductBasePrice(), getProductPrice(), getProductQuantity(), getProductID());

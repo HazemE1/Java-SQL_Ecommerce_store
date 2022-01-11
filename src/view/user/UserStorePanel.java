@@ -77,7 +77,12 @@ public class UserStorePanel extends JPanel {
             }
 
             Product product = (Product) listProducts.getSelectedValue();
-            Product userProduct = product.newUserProduct(Integer.parseInt(JOptionPane.showInputDialog("How many of this products do you want to add")));
+            int amount = Integer.parseInt(JOptionPane.showInputDialog("How many of this products do you want to add"));
+            if (amount > product.getProductQuantity()) {
+                JOptionPane.showMessageDialog(null, "There is not enough of that product in stock!");
+                return;
+            }
+            Product userProduct = product.newUserProduct(amount);
 
             Controller.getInstance().getUser().getCart().addProductToOrder(userProduct);
         });

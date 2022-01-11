@@ -2,6 +2,7 @@ package view.user;
 
 import controller.Controller;
 import model.Order;
+import model.OrderStatus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,8 @@ public class OrderHistoryPanel extends JPanel {
     private JScrollPane scrollPane;
 
     private JButton btnExit;
+    private JButton cancelOrder;
+
     private JLabel lblHistory;
 
 
@@ -43,6 +46,30 @@ public class OrderHistoryPanel extends JPanel {
         lblHistory = new JLabel("Order History");
 
 
+        cancelOrder = new JButton("Cancel order");
+        cancelOrder.setSize(new Dimension(200, 25));
+        cancelOrder.setPreferredSize(new Dimension(200, 25));
+        cancelOrder.setFont(new Font("Helvetica", Font.PLAIN, 12));
+        cancelOrder.setOpaque(true);
+        cancelOrder.setBorderPainted(false);
+        cancelOrder.addActionListener(l -> {
+            Order o = orderHistoryContent.getSelectedValue();
+
+            if (o == null) {
+                JOptionPane.showMessageDialog(null, "You need to select a Order to cancel first!");
+                return;
+            }
+            if (o.getStatus() == OrderStatus.CONFIRMED) {
+                JOptionPane.showMessageDialog(null, "That order is already confirmed and can not be cancled anymore!");
+                return;
+            }
+            o.cancelOrder();
+            Controller.getInstance().getUser().getOrderHistory().remove(o);
+            JOptionPane.showMessageDialog(null, "That order has been cancelled!");
+            this.orderHistoryFrame.dispose();
+
+        });
+
         btnExit = new JButton("Exit");
         btnExit.setSize(new Dimension(100, 25));
         btnExit.setPreferredSize(new Dimension(100, 25));
@@ -69,6 +96,11 @@ public class OrderHistoryPanel extends JPanel {
         gbc.gridy = 4;
 
         add(scrollPane, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        add(cancelOrder, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 6;

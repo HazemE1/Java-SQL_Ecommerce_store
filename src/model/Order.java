@@ -77,7 +77,8 @@ public class Order {
 
 
     public void saveToDatabase() {
-        DBController.getInstance().executeQuery(String.format("INSERT INTO orders VALUES ('%s','%s','%s','%s')", getStatus().name(), codeOrderItems(getItems()), getId(), Controller.getInstance().getUser().getUserName()));
+        DBController.getInstance().executeQuery(String.format("INSERT INTO orders VALUES ('%s','%s','%s','%s')", getStatus().name(), codeOrderItems(getItems()), getId(), getOrderPlacer()));
+        String.format("INSERT INTO orders VALUES ('%s','%s','%s','%s')", getStatus().name(), codeOrderItems(getItems()), getId(), getOrderPlacer());
     }
 
     public void deleteFromDatabase() {
@@ -133,5 +134,27 @@ public class Order {
     public void updateDatabase() {
         deleteFromDatabase();
         saveToDatabase();
+    }
+
+    public void cancelOrder() {
+        for (Product p : getItems()) {
+            for (Product product : Controller.getInstance().getProducts()) {
+                if (p.getProductID().equals(product.getProductID())) {
+                    product.setProductQuantity(product.getProductQuantity() + p.getProductQuantity());
+                    product.updateProduct();
+                }
+
+            }
+        }
+        Controller.getInstance().updateProductList();
+        this.deleteFromDatabase();
+    }
+
+    public void confirmOrder() {
+
+        this.setStatus(OrderStatus.CONFIRMED);
+        this.updateDatabase();
+        Controller.getInstance().updateProductList();
+
     }
 }

@@ -92,6 +92,8 @@ public class DBController {
             e.printStackTrace();
         }
 
+        val.add(new Discount("No discount", 0, "Removed discount"));
+
         return val;
     }
 
@@ -216,9 +218,9 @@ public class DBController {
     }
 
     public void logDiscount(Product product, Discount discount) {
-        Controller.getInstance().getDiscountHistory().add(String.format("Admin gave the product %s the discount %s at %s%s", product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%"));
-        executeQuery(String.format("INSERT INTO discount_history values ('Admin gave the product %s the discount %s at %s%s')",
-                product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%"));
+        Controller.getInstance().getDiscountHistory().add(String.format("Product %s - Discount %s at %s%s - Time: %s", product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%", new Date(System.currentTimeMillis()).toLocalDate().toString()));
+        executeQuery(String.format("INSERT INTO discount_history values ('Product %s - Discount %s at %s%s - Time: %s')",
+                product.getProductName(), discount.getDiscountReason(), discount.getDiscountPercentage(), "%", new Date(System.currentTimeMillis()).toLocalDate().toString()));
     }
 
     public boolean checkQuantity(int nbrOfItems, int productID) {

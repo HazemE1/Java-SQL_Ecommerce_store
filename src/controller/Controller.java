@@ -373,12 +373,22 @@ public class Controller {
             return;
         }
         user.getCart().setStatus(OrderStatus.CREATED);
-        user.getCart().saveToDatabase();
         user.getCart().setOrderPlacer(user.getUserName());
+        for (Product p : user.getCart().getItems()) {
+            for (Product product : Controller.getInstance().getProducts()) {
+                if (p.getProductID().equals(product.getProductID())) {
+                    product.setProductQuantity(product.getProductQuantity() - p.getProductQuantity());
+                    product.updateProduct();
+                }
+
+            }
+        }
         JOptionPane.showMessageDialog(null, "Orderd placed.");
         user.getOrderHistory().add(user.getCart());
+        user.getCart().saveToDatabase();
 
         user.setCart(new Order(user.getUserName()));
+        updateProductList();
 
     }
 

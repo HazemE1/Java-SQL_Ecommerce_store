@@ -2,7 +2,6 @@ package view.admin.AdminFrames;
 
 import controller.Controller;
 import model.Order;
-import model.OrderStatus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +17,8 @@ public class HandleOrdersPanel extends JPanel {
     private JScrollPane scrollPane;
 
     private JButton btnConfirmOrder;
+    private JButton btnCancelOrder;
+
     private JButton btnExit;
 
 
@@ -54,9 +55,33 @@ public class HandleOrdersPanel extends JPanel {
                 return;
 
             Order o = listOrders.getSelectedValue();
-            o.setStatus(OrderStatus.CONFIRMED);
-            o.updateDatabase();
+            o.confirmOrder();
 
+            this.handleOrdersFrame.dispose();
+        });
+
+        btnCancelOrder = new JButton("Cancel order");
+        btnCancelOrder.setSize(new Dimension(125, 25));
+        btnCancelOrder.setPreferredSize(new Dimension(125, 25));
+        btnCancelOrder.setFont(new Font("Helvetica", Font.PLAIN, 12));
+        btnCancelOrder.setOpaque(true);
+        btnCancelOrder.setBorderPainted(false);
+        btnCancelOrder.addActionListener(p -> {
+            if (listOrders.getSelectedValue() == null)
+                return;
+
+            Order o = listOrders.getSelectedValue();
+
+
+            int b = JOptionPane.showConfirmDialog(null, "Are you sure you want to Cancel that order?", "Are you sure?", JOptionPane.YES_NO_OPTION);
+            if (b == 0) {
+                o.cancelOrder();
+                Controller.getInstance().getOrders().remove(o);
+                JOptionPane.showMessageDialog(null, "The order has been cancelled!");
+            } else {
+                JOptionPane.showMessageDialog(null, "The order has not been cancelled!");
+
+            }
             this.handleOrdersFrame.dispose();
         });
 
@@ -92,6 +117,10 @@ public class HandleOrdersPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
+        add(btnCancelOrder, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         add(btnExit, gbc);
     }
 
@@ -99,9 +128,6 @@ public class HandleOrdersPanel extends JPanel {
         btnExit.addActionListener(new BtnExitListener());
     }
 
-    public void updateList() {
-
-    }
 
     private class BtnExitListener implements ActionListener {
 

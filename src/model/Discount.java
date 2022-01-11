@@ -99,6 +99,8 @@ public class Discount {
     public void applyDiscount() {
         double percentage = 1 - (discountPercentage / 100.0);
         for (Product discountedItem : discountedItems) {
+            if (discountedItem == null)
+                continue;
             Product ni = Controller.getInstance().getProductById(discountedItem.getProductID());
             if (ni == null)
                 continue;
