@@ -66,12 +66,12 @@ public class Discount {
         for (Product discountedItem : discountedItems) {
             if (discountedItem == null)
                 continue;
-            sb.append(discountedItem.getProductID()).append(":");
+            sb.append(discountedItem.getProductID()).append(":"); // item1:item2:item3:item4
         }
         return sb.substring(0, sb.length() - 1);
     }
 
-    private Set<Product> deCodeProducts(String coded) {
+    private Set<Product> deCodeProducts(String coded) { // item1:item2:item3:item4 -> [item1,item2,item3,item4]
         if (coded == null || coded.isEmpty())
             return new HashSet<>();
         Set<Product> val = new HashSet<>();
